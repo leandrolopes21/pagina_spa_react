@@ -1,0 +1,84 @@
+/* Sobre.module.css */
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 60px 20px;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+}
+
+.profileCard {
+  background: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  border-top: 8px solid #3498db;
+}
+
+.title {
+  font-size: 2.2rem;
+  color: #2c3e50;
+  margin-bottom: 5px;
+}
+
+.subtitle {
+  color: #3498db;
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-bottom: 30px;
+  display: block;
+}
+
+.bio {
+  line-height: 1.8;
+  color: #555;
+  font-size: 1.1rem;
+  margin-bottom: 40px;
+}
+
+.projectsSection {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+@media (max-width: 600px) {
+  .projectsSection {
+    grid-template-columns: 1fr;
+  }
+}
+
+.projectItem {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 10px;
+  border-left: 4px solid #bdc3c7;
+}
+
+.projectItem h4 {
+  margin: 0 0 10px 0;
+  color: #2c3e50;
+}
+
+.projectItem p {
+  font-size: 0.95rem;
+  color: #666;
+  margin: 0;
+}
+
+.skillsTags {
+  margin-top: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.tag {
+  background: #ebf5fb;
+  color: #3498db;
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: bold;
+}
