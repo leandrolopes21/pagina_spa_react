@@ -33,7 +33,7 @@ export async function buscarLivro(textoDigitado) {
 
         // Identifica se o erro é falta de configuração
         if (error.message === "API_KEY_MISSING") {
-            return { erro: "Configuração incompleta: Chave de API não encontrada no servidor de hospedagem." };
+            return { erro: "Chave de API não configurada. Adicione NEXT_PUBLIC_GOOGLE_BOOKS_API_KEY nas variáveis de ambiente da sua hospedagem (Vercel/GitHub)." };
         }
 
         // Tratamento específico para cota excedida
