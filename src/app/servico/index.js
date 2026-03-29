@@ -13,9 +13,12 @@ export async function buscarLivro(textoDigitado) {
         // Constrói a URL dinamicamente. 
         // Enviar "&key=undefined" causa erro 400 na API do Google.
         let url = `https://www.googleapis.com/books/v1/volumes?q=${textoDigitado}`;
-        
-        if (apiKey && apiKey !== "undefined") {
+
+        // Verifica se a chave existe e não é uma string "undefined" (comum em builds de CI)
+        if (apiKey && apiKey !== "undefined" && apiKey !== "") {
             url += `&key=${apiKey}`;
+        } else {
+            console.warn("Aviso: Chave de API não encontrada. A busca pode ser limitada ou falhar em produção.");
         }
 
         const resposta = await axios.get(url);
@@ -23,7 +26,10 @@ export async function buscarLivro(textoDigitado) {
 
         return dados;
     } catch (error) {
-        console.error("Erro na chamada da API:", error.response?.data || error.message);
+        // Log mais detalhado para identificar o motivo do erro 400 no console do navegador
+        const mensagemErro = error.response?.data?.error?.message || error.message;
+        console.error("Erro na chamada da API:", mensagemErro);
+        
         return {erro: "Erro ao acessar a API de livros: " + error.message};
     }
 }
