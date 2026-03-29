@@ -32,7 +32,8 @@ export default function Home() {
     try {
         // Codifica o termo de busca para tratar caracteres especiais como #
         const dados = await buscarLivro(encodeURIComponent(busca.trim()));
-        if (dados.erro) {
+        // if (dados.erro) { 
+        if (dados && dados.erro) { // Verificação mais segura para evitar erros de leitura de propriedade
             console.error(dados.erro);
         } else {
             setLivros(dados.items || []);
