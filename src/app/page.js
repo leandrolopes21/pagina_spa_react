@@ -12,6 +12,8 @@ export default function Home() {
 
   // Efeito para busca automática enquanto digita (Debounce)
   useEffect(() => {
+    let isMounted = true; // Flag para evitar atualizações de estado em componentes desmontados ou buscas obsoletas
+
     // Se o campo estiver vazio, limpamos a lista e não fazemos a requisição
     if (!busca.trim()) {
       setLivros([]);
@@ -21,11 +23,14 @@ export default function Home() {
 
     // Aguarda 500ms após a última tecla antes de pesquisar
     const timer = setTimeout(() => {
-      pesquisarLivros();
+      if (isMounted) pesquisarLivros();
     }, 500);
 
     // Limpa o timer se o usuário digitar novamente dentro do intervalo
-    return () => clearTimeout(timer);
+    return () => {
+      isMounted = false;
+      clearTimeout(timer);
+    };
   }, [busca]);
 
   // Função para buscar os dados na API do Google Books
