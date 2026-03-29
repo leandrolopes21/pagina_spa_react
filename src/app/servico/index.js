@@ -18,7 +18,8 @@ export async function buscarLivro(textoDigitado) {
         if (apiKey && apiKey !== "undefined" && apiKey !== "") {
             url += `&key=${apiKey}`;
         } else {
-            console.warn("Aviso: Chave de API não encontrada. A busca pode ser limitada ou falhar em produção.");
+            // Se cair aqui em produção, significa que você esqueceu de configurar a variável no painel da Vercel/GitHub
+            throw new Error("API_KEY_MISSING");
         }
 
         const resposta = await axios.get(url);
@@ -29,6 +30,11 @@ export async function buscarLivro(textoDigitado) {
         // Log mais detalhado para identificar o motivo do erro 400 no console do navegador
         const mensagemErro = error.response?.data?.error?.message || error.message;
         console.error("Erro na chamada da API:", mensagemErro);
+
+        // Identifica se o erro é falta de configuração
+        if (error.message === "API_KEY_MISSING") {
+            return { erro: "Configuração incompleta: Chave de API não encontrada no servidor de hospedagem." };
+        }
 
         // Tratamento específico para cota excedida
         if (mensagemErro.includes("Quota exceeded")) {
