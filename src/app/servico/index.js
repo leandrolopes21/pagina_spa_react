@@ -29,7 +29,12 @@ export async function buscarLivro(textoDigitado) {
         // Log mais detalhado para identificar o motivo do erro 400 no console do navegador
         const mensagemErro = error.response?.data?.error?.message || error.message;
         console.error("Erro na chamada da API:", mensagemErro);
-        
-        return {erro: "Erro ao acessar a API de livros: " + error.message};
+
+        // Tratamento específico para cota excedida
+        if (mensagemErro.includes("Quota exceeded")) {
+            return { erro: "Limite de buscas diárias atingido. Tente novamente amanhã ou use sua própria API Key." };
+        }
+
+        return { erro: "Erro ao acessar a API de livros: " + mensagemErro };
     }
 }

@@ -8,12 +8,14 @@ export default function Home() {
   const [busca, setBusca] = useState('');
   const [livros, setLivros] = useState([]);
   const [carregando, setCarregando] = useState(false);
+  const [erro, setErro] = useState(null);
 
   // Efeito para busca automática enquanto digita (Debounce)
   useEffect(() => {
     // Se o campo estiver vazio, limpamos a lista e não fazemos a requisição
     if (!busca.trim()) {
       setLivros([]);
+      setErro(null);
       return;
     }
 
@@ -29,17 +31,20 @@ export default function Home() {
   // Função para buscar os dados na API do Google Books
   async function pesquisarLivros() {
     setCarregando(true);
+    setErro(null);
     try {
         // Codifica o termo de busca para tratar caracteres especiais como #
         const dados = await buscarLivro(encodeURIComponent(busca.trim()));
         // if (dados.erro) { 
         if (dados && dados.erro) { // Verificação mais segura para evitar erros de leitura de propriedade
-            console.error(dados.erro);
+            setErro(dados.erro);
+            setLivros([]);
         } else {
             setLivros(dados.items || []);
         }
     } catch (error) {
         console.error('Erro na requisição:', error);
+        setErro("Ocorreu um erro inesperado.");
     } finally {
         setCarregando(false);
     }
@@ -51,6 +56,7 @@ export default function Home() {
     } else {
         setBusca(''); // Volta o input para vazio
         setLivros([]); // Esvazia a lista de livros, o que faz a tela inicial voltar a aparecer
+        setErro(null);
     }
   }
 
@@ -79,6 +85,12 @@ export default function Home() {
             <div className={estilos.informa_status}>
                 <p>{carregando ? 'Pesquisando...' : (busca ? 'Resultados para: ' + busca : 'Digite algo para pesquisar')}</p>
             </div>
+
+            {erro && (
+                <div className={estilos.erro_container} style={{ color: 'red', textAlign: 'center', marginBottom: '20px' }}>
+                    <p>{erro}</p>
+                </div>
+            )}
 
             <main className={estilos.grade_livros}>
                 {livros.length > 0 ? (
